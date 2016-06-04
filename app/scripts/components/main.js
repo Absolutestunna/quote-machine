@@ -1,14 +1,17 @@
 var Backbone = require('backbone');
 var React = require('react');
-var $ = require('jquery');
-
+var ReactDOM = require('react-dom');
+require('backbone-react-component');
 
 var MainPageComponent = React.createClass({displayName: "MainPageComponent",
-  
+  componentDidMount: function(){
+    console.log('comp rendered');
+    this.props.handleGetQuotes();
+  },
   render: function(){
     return (
-      React.createElement("div", null, 
-        React.createElement("h3", null, "Main Page rendered")
+      React.createElement("div", {className: "row"}, 
+        React.createElement("div", {className: "col s4"})
       )
     );
   }

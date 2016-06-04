@@ -10,14 +10,14 @@ var LoginComponent = require('./components/login.jsx');
 
 var Router = Backbone.Router.extend({
   routes: {
-    '': '_signInPage',
-    'main': '_mainPage'
+    '': 'signInPage',
+    'mainPage': 'mainPage'
   },
-  _signInPage: function(){
-    this.current = '_signInPage';
+  signInPage: function(){
+    this.current = 'signInPage';
   },
-  _mainPage: function(){
-    this.current = '_mainPage';
+  mainPage: function(){
+    this.current = 'mainPage';
   }
 });
 

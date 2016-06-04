@@ -1,16 +1,26 @@
 var Backbone = require('backbone');
 var React = require('react');
+var ReactDOM = require('react-dom');
+require('backbone-react-component');
 var $ = require('jquery');
 
-//local components
+//local lifecycle components
 var LoginPageComponent = require('./login.jsx');
 var MainPageComponent = require('./main.jsx');
 
 
 var Interface = React.createClass({displayName: "Interface",
+  // React lifecycle components
   getInitialState: function(){
     return {
-      router: this.props.router
+      router: this.props.router,
+      quotes: []
+    }
+  },
+  getDefaultProps: function(){
+    return {
+      auth_url: 'http://104.131.203.140:3000/api/',
+      quote_url: 'http://104.131.203.140:3000/api/tesla/quotes/'
     }
   },
   componentWillMount: function(){
@@ -22,9 +32,14 @@ var Interface = React.createClass({displayName: "Interface",
   componentWillUnmount: function(){
     this.state.router.off('route', this.callback);
   },
-  handleMainPage: function(e){
+
+
+  // Custom functions
+
+
+  handleAuthentication: function(e){
     e.preventDefault();
-    $.post('http://104.131.203.140:3000/api/authenticate',
+    $.post(this.props.auth_url + 'authenticate',
     {
       "user": $('#username').val(),
       "pass": $('#password').val()
@@ -32,21 +47,46 @@ var Interface = React.createClass({displayName: "Interface",
     function (result) {
       if (result.token) {
         alert('authenticated');
-        Backbone.history.navigate('_mainPage', {trigger: 'true'});
+        console.log(result);
+        Backbone.history.navigate('mainPage', {trigger: 'true'});
       } else {
         alert('not authenticated');
       }
     }.bind(this));
   },
+
+  handleGetQuotes: function(){
+    $.getJSON(this.props.quote_url)
+        .done(function(data){
+          console.log('success', data);
+      })
+        .fail(function(error){
+          console.log('error', error);
+        });
+
+      // $.ajax({
+      //   dataType: "json",
+      //   url: this.props.quote_url,
+      //   data: data,
+      //   success: function(data){
+      //     console.log('data is', data);
+      //   }
+      // });
+  },
+
+  //render components
+
   render: function(){
     var currentComponent;
     var route = this.props.router;
-    if (route.current == '_signInPage'){
+    if (route.current == 'signInPage'){
       currentComponent = React.createElement(LoginPageComponent, {
-        handleMainPage: this.handleMainPage}
+        handleAuthentication: this.handleAuthentication}
         )
-    } else if (route.current == '_mainPage'){
-      currentComponent = React.createElement(MainPageComponent, null)
+    } else if (route.current == 'mainPage'){
+      currentComponent = React.createElement(MainPageComponent, {
+        handleGetQuotes: this.handleGetQuotes}
+        )
     }
     return (
       React.createElement("div", null, 
