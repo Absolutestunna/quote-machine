@@ -20,7 +20,8 @@ var Interface = React.createClass({displayName: "Interface",
   getDefaultProps: function(){
     return {
       auth_url: 'http://104.131.203.140:3000/api/',
-      quote_url: 'http://104.131.203.140:3000/api/tesla/quotes/'
+      quote_url: 'http://104.131.203.140:3000/api/tesla/quotes/',
+      createQuote_url: 'http://104.131.203.140:3000/api/tesla/'
     }
   },
   componentWillMount: function(){
@@ -45,6 +46,7 @@ var Interface = React.createClass({displayName: "Interface",
       "pass": $('#password').val()
     },
     function (result) {
+      this.authToken = result.token;
       if (result.msg === "Successful auth") {
         alert('authenticated');
         console.log(result);
@@ -57,13 +59,36 @@ var Interface = React.createClass({displayName: "Interface",
   },
 
   handleGetQuotes: function(){
-    $.getJSON(this.props.quote_url)
-        .done(function(data){
-          console.log('success', data);
-      })
-        .fail(function(error){
-          console.log('error', error);
-        });
+    var self = this;
+
+    $.ajax({
+      url: this.props.quote_url,
+      headers: {
+          'x-Auth-token': self.authToken,
+          'Content-Type':'application/json'
+      },
+      method: 'GET',
+      dataType: 'json',
+      success: function(data){
+        console.log('succes: ', data);
+        self.setState({quotes: data});
+      },
+      error: function(error){
+        console.log('error msg', error);
+      }
+    });
+  },
+
+  handleCreateQuote: function(e){
+    e.preventDefault();
+    $.post(this.props.quote_url + 'posts',
+      {
+        quote: $('#quote').val(),
+        author: $('#author').val()
+      },
+      function (result) {
+        console.log('post result', result);
+      }.bind(this));
 
 
   },
@@ -79,7 +104,8 @@ var Interface = React.createClass({displayName: "Interface",
         )
     } else if (route.current == 'mainPage'){
       currentComponent = React.createElement(MainPageComponent, {
-        handleGetQuotes: this.handleGetQuotes}
+        handleGetQuotes: this.handleGetQuotes, 
+        handleCreateQuote: this.handleCreateQuote}
         )
     }
     return (
