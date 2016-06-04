@@ -6,7 +6,7 @@ require('backbone-react-component');
 
 var MainPageComponent = React.createClass({
   componentDidMount: function(){
-    console.log('comp rendered');
+    console.log('main comp has been rendered');
     this.props.handleGetQuotes();
   },
   render: function(){

@@ -45,12 +45,13 @@ var Interface = React.createClass({displayName: "Interface",
       "pass": $('#password').val()
     },
     function (result) {
-      if (result.token) {
+      if (result.msg === "Successful auth") {
         alert('authenticated');
         console.log(result);
         Backbone.history.navigate('mainPage', {trigger: 'true'});
       } else {
         alert('not authenticated');
+        console.log('error', result);
       }
     }.bind(this));
   },
@@ -64,14 +65,7 @@ var Interface = React.createClass({displayName: "Interface",
           console.log('error', error);
         });
 
-      // $.ajax({
-      //   dataType: "json",
-      //   url: this.props.quote_url,
-      //   data: data,
-      //   success: function(data){
-      //     console.log('data is', data);
-      //   }
-      // });
+
   },
 
   //render components
