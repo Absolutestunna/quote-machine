@@ -1,0 +1,37 @@
+
+// Bootstrap Variables
+$icon-font-path: '../../node_modules/bootstrap-sass/assets/fonts/bootstrap/';
+
+// Import Bootstrap
+@import '../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap';
+
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+
+body {
+  background-color: #FBF5F1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#app {
+  width: 90%;
+  padding-top: 50px;
+}
+
+
+// login page
+#login-page {
+  padding-top: 80px;
+  height: 360px;
+  max-width: 300px;
+  .card-info {
+    height: 100%;
+  }
+}
