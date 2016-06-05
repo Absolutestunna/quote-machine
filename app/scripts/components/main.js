@@ -1,23 +1,49 @@
 var Backbone = require('backbone');
 var React = require('react');
 var ReactDOM = require('react-dom');
+var _ = require('underscore');
 require('backbone-react-component');
 
 var MainPageComponent = React.createClass({displayName: "MainPageComponent",
+  getInitialState: function(){
+    return {
+      quotes: []
+    }
+  },
   componentDidMount: function(){
-    console.log('main comp has been rendered');
     this.props.handleGetQuotes();
+    // console.log('state quotes', this.state.quotes);
+  },
+
+  componentWillReceiveProps: function(nextProps) {
+    console.log('nextProps', nextProps);
+    this.setState({
+      quotes: nextProps.quotes
+    });
   },
 
   render: function(){
+    console.log('quotess', this.state.quotes);
+    var quoteList = this.state.quotes;
+    var quotes = quoteList.map(function(quote){
+      return (
+        React.createElement("li", {key: quote.quote_id}, 
+          React.createElement("div", {className: "collapsible-header truncate quote"}, quote.quote), 
+          React.createElement("a", {className: "btn-floating btn-large waves-effect waves-light red"}, React.createElement("i", {className: "material-icons right"}, "send"))
+        )
+      );
+    });
     return (
       React.createElement("div", {className: "row"}, 
-        React.createElement("div", {className: "col s4"}, 
-          React.createElement("h3", null, "List of Quotes")
+        React.createElement("div", {className: "col s5"}, 
+            React.createElement("ul", {className: "collection with-header"}, 
+              React.createElement("li", {className: "collection-header"}, React.createElement("h4", null, "List of Quotes")), 
+              quotes
+            )
         ), 
 
 
-        React.createElement("div", {className: "col s8"}, 
+        React.createElement("div", {className: "col s7"}, 
           React.createElement("div", {className: "row"}, 
             React.createElement("div", {className: "col s12 viewQuote"}, 
               React.createElement("div", {className: "card-panel white"}
@@ -43,6 +69,7 @@ var MainPageComponent = React.createClass({displayName: "MainPageComponent",
                         React.createElement("i", {className: "material-icons right"}, "send")
                       )
                     )
+
 
                   )
                )

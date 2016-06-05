@@ -70,8 +70,9 @@ var Interface = React.createClass({displayName: "Interface",
       method: 'GET',
       dataType: 'json',
       success: function(data){
-        console.log('succes: ', data);
+        console.log('list of quotes: ', data);
         self.setState({quotes: data});
+
       },
       error: function(error){
         console.log('error msg', error);
@@ -104,6 +105,7 @@ var Interface = React.createClass({displayName: "Interface",
         )
     } else if (route.current == 'mainPage'){
       currentComponent = React.createElement(MainPageComponent, {
+        quotes: this.state.quotes, 
         handleGetQuotes: this.handleGetQuotes, 
         handleCreateQuote: this.handleCreateQuote}
         )
