@@ -9,14 +9,14 @@ var $ = require('jquery');
 var LoginPageComponent = require('./login.jsx');
 var MainPageComponent = require('./main.jsx');
 
-
 var Interface = React.createClass({
   // React lifecycle components
   getInitialState: function(){
     return {
       router: this.props.router,
       quotes: [],
-      selQuote: {}
+      selQuote: {},
+      randomQuote: {}
     }
   },
   getDefaultProps: function(){
@@ -42,29 +42,28 @@ var Interface = React.createClass({
 
   handleAuthentication: function(e){
     e.preventDefault();
+    var user = $('#username').val();
+    var pass = $('#password').val();
+    console.log('usr + pass', user);
+    console.log('usr + pass', pass);
     $.post(this.props.auth_url + 'authenticate',
     {
-      "user": $('#username').val(),
-      "pass": $('#password').val()
+      "user": user,
+      "pass": pass
     },
     function (result) {
       this.authToken = result.token;
       if (result.msg === "Successful auth") {
-        alert('authenticated');
         console.log(result);
         Backbone.history.navigate('mainPage', {trigger: 'true'});
       } else {
-        alert('not authenticated');
         console.log('error', result);
       }
     }.bind(this));
   },
-  handleDisplayQuoteInfo: function(model){
-    console.log('model', model);
-  },
+
   handleGetQuotes: function(){
     var self = this;
-
     $.ajax({
       url: this.props.quote_url,
       headers: {
@@ -85,21 +84,51 @@ var Interface = React.createClass({
   },
 
   handleCreateQuote: function(e){
-    e.preventDefault();
-    $.post(this.props.quote_url + 'posts',
-      {
-        quote: $('#quote').val(),
-        author: $('#author').val()
-      },
-      function (result) {
-        console.log('post result', result);
-      }.bind(this));
+      e.preventDefault();
+      var self = this;
+      $.ajax({
+        url: this.props.createQuote_url + 'posts',
+        contentType: 'application/json',
+        headers: {
+            'x-Auth-token': self.authToken,
+        },
+        data: JSON.stringify({
+            'quote': $('#quote').val(),
+            'author': $('#author').val()
+        }),
+        method: 'POST',
+        dataType: 'json',
+      }).done(function(log){
+        console.log('created quote msg ', log);
+
+      }).error(function(error){
+        console.log('error msg', error);
+
+      });
   },
   handleDisplayQuoteInfo: function(model){
     console.log('new model', model);
     this.setState({selQuote: model})
   },
+  handleGetRandomQuote: function(e){
+    e.preventDefault();
+    var self = this;
+    $.ajax({
+      url: this.props.quote_url + 'random',
+      contentType: 'application/json',
+      headers: {
+          'x-Auth-token': self.authToken,
+      },
+      method: 'GET',
+      dataType: 'json',
+    }).done(function(log){
+      console.log('randome quote created ', log);
+      self.setState({randomQuote: log});
+    }).error(function(error){
+      console.log('randome msg error msg', error);
 
+    });
+  },
 
   //render components
 
@@ -117,6 +146,8 @@ var Interface = React.createClass({
         handleCreateQuote={this.handleCreateQuote}
         handleDisplayQuoteInfo={this.handleDisplayQuoteInfo}
         selQuote={this.state.selQuote}
+        handleGetRandomQuote = {this.handleGetRandomQuote}
+        randomQuote = {this.state.randomQuote}
         />
     }
     return (

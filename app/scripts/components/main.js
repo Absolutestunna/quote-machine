@@ -7,6 +7,7 @@ require('backbone-react-component');
 
 //local components
 var CreateQuoteComponent = require('./createQuote.jsx');
+var RandomQuoteComponent = require('./randomQuote.jsx');
 
 
 var MainPageComponent = React.createClass({displayName: "MainPageComponent",
@@ -67,7 +68,12 @@ var MainPageComponent = React.createClass({displayName: "MainPageComponent",
                 React.createElement("p", null, quoteInfo.author)
               )
             ), 
-            React.createElement(CreateQuoteComponent, null)
+            React.createElement(CreateQuoteComponent, {
+              handleCreateQuote: this.props.handleCreateQuote}
+              ), 
+            React.createElement(RandomQuoteComponent, {
+              handleGetRandomQuote: this.props.handleGetRandomQuote}
+              )
           )
         )
       )
