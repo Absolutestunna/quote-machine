@@ -5,41 +5,55 @@ var ReactDOM = require('react-dom');
 var _ = require('underscore');
 require('backbone-react-component');
 
+
+//local components
+var CreateQuoteComponent = require('./createQuote.jsx');
+
+
 var MainPageComponent = React.createClass({
   getInitialState: function(){
     return {
-      quotes: []
+      quotes: [],
+      selQuote: {}
     }
   },
   componentDidMount: function(){
     this.props.handleGetQuotes();
-    // console.log('state quotes', this.state.quotes);
   },
 
   componentWillReceiveProps: function(nextProps) {
     console.log('nextProps', nextProps);
-    this.setState({
-      quotes: nextProps.quotes
-    });
-  },
-
-  render: function(){
-    console.log('quotess', this.state.quotes);
-    var quoteList = this.state.quotes;
+    var self = this;
+    var selQuote = nextProps.selQuote;
+    var quoteInfo = self.props.handleDisplayQuoteInfo;
+    var quoteList = nextProps.quotes;
     var quotes = quoteList.map(function(quote){
       return (
-        <li key={quote.quote_id}>
-          <div className="collapsible-header truncate quote">{quote.quote}</div>
-          <a className="btn-floating btn-large waves-effect waves-light red"><i className="material-icons right">send</i></a>
+        <li onClick={quoteInfo.bind(this, quote)} className="collection-item truncate" key={quote.quote_id}>
+          <span className="">{quote.quote}</span>
         </li>
       );
     });
+    this.setState({
+      quotes: quotes,
+      selQuote: selQuote
+    });
+  },
+
+
+
+  //custom functions
+
+
+
+  render: function(){
+    var quoteInfo = this.state.selQuote
     return (
       <div className="row">
         <div className="col s5">
             <ul className="collection with-header">
               <li className="collection-header"><h4>List of Quotes</h4></li>
-              {quotes}
+              {this.state.quotes}
             </ul>
         </div>
 
@@ -48,33 +62,13 @@ var MainPageComponent = React.createClass({
           <div className="row">
             <div className="col s12 viewQuote">
               <div className="card-panel white">
-
+                <blockquote>
+                  {quoteInfo.quote}
+                </blockquote>
+                <p>{quoteInfo.author}</p>
               </div>
             </div>
-            <div className="col s12 genQuote">
-                <div className="card-panel white">
-                  <form className="login-form row" onSubmit={this.props.handleCreateQuote}>
-                    <div className="input-field col s12">
-                      <i className="material-icons prefix">mode_edit</i>
-                      <textarea id="quote" className="materialize-textarea"></textarea>
-                      <label htmlFor="quote">Quote</label>
-                    </div>
-
-                    <div className="input-field col s6">
-                      <input id="author" type="text" className="validate" />
-                      <label htmlFor="author">Author</label>
-                    </div>
-
-                    <div className="input-field col s6">
-                      <button className="btn waves-effect waves-light" type="submit">Submit
-                        <i className="material-icons right">send</i>
-                      </button>
-                    </div>
-
-
-                  </form>
-               </div>
-            </div>
+            <CreateQuoteComponent />
           </div>
         </div>
       </div>

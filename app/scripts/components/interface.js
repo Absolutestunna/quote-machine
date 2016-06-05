@@ -14,7 +14,8 @@ var Interface = React.createClass({displayName: "Interface",
   getInitialState: function(){
     return {
       router: this.props.router,
-      quotes: []
+      quotes: [],
+      selQuote: {}
     }
   },
   getDefaultProps: function(){
@@ -57,7 +58,9 @@ var Interface = React.createClass({displayName: "Interface",
       }
     }.bind(this));
   },
-
+  handleDisplayQuoteInfo: function(model){
+    console.log('model', model);
+  },
   handleGetQuotes: function(){
     var self = this;
 
@@ -90,9 +93,12 @@ var Interface = React.createClass({displayName: "Interface",
       function (result) {
         console.log('post result', result);
       }.bind(this));
-
-
   },
+  handleDisplayQuoteInfo: function(model){
+    console.log('new model', model);
+    this.setState({selQuote: model})
+  },
+
 
   //render components
 
@@ -107,14 +113,15 @@ var Interface = React.createClass({displayName: "Interface",
       currentComponent = React.createElement(MainPageComponent, {
         quotes: this.state.quotes, 
         handleGetQuotes: this.handleGetQuotes, 
-        handleCreateQuote: this.handleCreateQuote}
+        handleCreateQuote: this.handleCreateQuote, 
+        handleDisplayQuoteInfo: this.handleDisplayQuoteInfo, 
+        selQuote: this.state.selQuote}
         )
     }
     return (
       React.createElement("div", null, 
         currentComponent
       )
-
     );
   }
 });

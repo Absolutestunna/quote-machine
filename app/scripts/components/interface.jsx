@@ -15,7 +15,8 @@ var Interface = React.createClass({
   getInitialState: function(){
     return {
       router: this.props.router,
-      quotes: []
+      quotes: [],
+      selQuote: {}
     }
   },
   getDefaultProps: function(){
@@ -58,7 +59,9 @@ var Interface = React.createClass({
       }
     }.bind(this));
   },
-
+  handleDisplayQuoteInfo: function(model){
+    console.log('model', model);
+  },
   handleGetQuotes: function(){
     var self = this;
 
@@ -91,9 +94,12 @@ var Interface = React.createClass({
       function (result) {
         console.log('post result', result);
       }.bind(this));
-
-
   },
+  handleDisplayQuoteInfo: function(model){
+    console.log('new model', model);
+    this.setState({selQuote: model})
+  },
+
 
   //render components
 
@@ -109,13 +115,14 @@ var Interface = React.createClass({
         quotes={this.state.quotes}
         handleGetQuotes={this.handleGetQuotes}
         handleCreateQuote={this.handleCreateQuote}
+        handleDisplayQuoteInfo={this.handleDisplayQuoteInfo}
+        selQuote={this.state.selQuote}
         />
     }
     return (
       <div>
         {currentComponent}
       </div>
-
     );
   }
 });
