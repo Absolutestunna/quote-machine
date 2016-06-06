@@ -45,10 +45,21 @@ var MainPageComponent = React.createClass({
 
   //custom functions
 
-  edit: function(){
+  edit: function(model, e){
+    e.preventDefault();
     this.setState({editState: true});
   },
-  renderQuoteInfoDisplay: function(){
+  save: function(e){
+    e.preventDefault();
+    this.setState({editState: false});
+  },
+  delete: function(model, e){
+    e.preventDefault();
+    this.props.handleDeleteQuote(model);
+
+
+  },
+  renderQuoteInfoDisplay: function(quoteInfo){
     return (
       <div className="col s12 viewQuote">
         <div className="card-panel white">
@@ -56,6 +67,35 @@ var MainPageComponent = React.createClass({
             {quoteInfo.quote}
           </blockquote>
           <p>{quoteInfo.author}</p>
+          <div className="right-align">
+            <a onClick={this.delete.bind(this, quoteInfo)} className="btn-floating btn-small red">
+              <i className="large material-icons">delete</i>
+            </a>
+            <a onClick={this.edit.bind(this, quoteInfo)} className="btn-floating btn-small blue">
+              <i className="large material-icons">mode_edit</i>
+            </a>
+
+          </div>
+
+        </div>
+      </div>
+    );
+  },
+
+  renderEditPage: function(quoteInfo){
+    return (
+      <div className="col s12 editQuote">
+        <div className="card-panel white">
+          <div className="input-field">
+            <i className="small material-icons prefix">mode_edit</i>
+            <textarea placeholder={quoteInfo.quote} id="editquote" type="text" className="materialize-textarea validate"></textarea>
+            <label htmlFor="textarea1">Edit Your quote</label>
+            <div className="right-align">
+              <a onClick={this.save} className="btn-floating btn-large green" type="submit">
+                <i className="large material-icons">done</i>
+              </a>
+            </div>
+          </div>
         </div>
       </div>
     );
@@ -64,6 +104,16 @@ var MainPageComponent = React.createClass({
 
   render: function(){
     var quoteInfo = this.state.selQuote;
+    var quote = quoteInfo.quote;
+    var author = quoteInfo.author;
+    var display;
+    if (this.state.editState === false){
+      display = this.renderQuoteInfoDisplay(quoteInfo);
+    } else if (this.state.editState === true){
+      display = this.renderEditPage(quoteInfo);
+    } else {
+      display = <div />
+    }
     return (
       <div className="row">
         <div className="col s5">
@@ -77,14 +127,7 @@ var MainPageComponent = React.createClass({
         <div className="col s7">
           <div className="row">
 
-            <div className="col s12 viewQuote">
-              <div className="card-panel white">
-                <blockquote>
-                  {quoteInfo.quote}
-                </blockquote>
-                <p>{quoteInfo.author}</p>
-              </div>
-            </div>
+            {display}
 
             <CreateQuoteComponent
               handleCreateQuote = {this.props.handleCreateQuote}

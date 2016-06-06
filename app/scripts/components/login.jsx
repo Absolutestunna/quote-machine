@@ -14,7 +14,7 @@ var LoginPageComponent = React.createClass({
       <div className="row">
         <div id="login-page" className="col xs12 col s8 offset-s4">
           <div className="card-panel z-index-6 card-info teal lighten-5">
-            <form onSubmit={this.props.handleAuthentication} className="login-form row">
+            <form onSubmit={this.props.handleLogin} className="login-form row">
               <div className="input-field col s12">
                 <input id="username" type="text" className="validate" />
                 <label htmlFor="username">Username</label>

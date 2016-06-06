@@ -44,17 +44,57 @@ var MainPageComponent = React.createClass({displayName: "MainPageComponent",
 
   //custom functions
 
-  edit: function(){
+  edit: function(model, e){
+    e.preventDefault();
     this.setState({editState: true});
   },
-  renderQuoteInfoDisplay: function(){
+  save: function(e){
+    e.preventDefault();
+    this.setState({editState: false});
+  },
+  delete: function(model, e){
+    e.preventDefault();
+    this.props.handleDeleteQuote(model);
+
+
+  },
+  renderQuoteInfoDisplay: function(quoteInfo){
     return (
       React.createElement("div", {className: "col s12 viewQuote"}, 
         React.createElement("div", {className: "card-panel white"}, 
           React.createElement("blockquote", null, 
             quoteInfo.quote
           ), 
-          React.createElement("p", null, quoteInfo.author)
+          React.createElement("p", null, quoteInfo.author), 
+          React.createElement("div", {className: "right-align"}, 
+            React.createElement("a", {onClick: this.delete.bind(this, quoteInfo), className: "btn-floating btn-small red"}, 
+              React.createElement("i", {className: "large material-icons"}, "delete")
+            ), 
+            React.createElement("a", {onClick: this.edit.bind(this, quoteInfo), className: "btn-floating btn-small blue"}, 
+              React.createElement("i", {className: "large material-icons"}, "mode_edit")
+            )
+
+          )
+
+        )
+      )
+    );
+  },
+
+  renderEditPage: function(quoteInfo){
+    return (
+      React.createElement("div", {className: "col s12 editQuote"}, 
+        React.createElement("div", {className: "card-panel white"}, 
+          React.createElement("div", {className: "input-field"}, 
+            React.createElement("i", {className: "small material-icons prefix"}, "mode_edit"), 
+            React.createElement("textarea", {placeholder: quoteInfo.quote, id: "editquote", type: "text", className: "materialize-textarea validate"}), 
+            React.createElement("label", {htmlFor: "textarea1"}, "Edit Your quote"), 
+            React.createElement("div", {className: "right-align"}, 
+              React.createElement("a", {onClick: this.save, className: "btn-floating btn-large green", type: "submit"}, 
+                React.createElement("i", {className: "large material-icons"}, "done")
+              )
+            )
+          )
         )
       )
     );
@@ -63,6 +103,16 @@ var MainPageComponent = React.createClass({displayName: "MainPageComponent",
 
   render: function(){
     var quoteInfo = this.state.selQuote;
+    var quote = quoteInfo.quote;
+    var author = quoteInfo.author;
+    var display;
+    if (this.state.editState === false){
+      display = this.renderQuoteInfoDisplay(quoteInfo);
+    } else if (this.state.editState === true){
+      display = this.renderEditPage(quoteInfo);
+    } else {
+      display = React.createElement("div", null)
+    }
     return (
       React.createElement("div", {className: "row"}, 
         React.createElement("div", {className: "col s5"}, 
@@ -76,14 +126,7 @@ var MainPageComponent = React.createClass({displayName: "MainPageComponent",
         React.createElement("div", {className: "col s7"}, 
           React.createElement("div", {className: "row"}, 
 
-            React.createElement("div", {className: "col s12 viewQuote"}, 
-              React.createElement("div", {className: "card-panel white"}, 
-                React.createElement("blockquote", null, 
-                  quoteInfo.quote
-                ), 
-                React.createElement("p", null, quoteInfo.author)
-              )
-            ), 
+            display, 
 
             React.createElement(CreateQuoteComponent, {
               handleCreateQuote: this.props.handleCreateQuote}

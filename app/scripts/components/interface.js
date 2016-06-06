@@ -38,13 +38,13 @@ var Interface = React.createClass({displayName: "Interface",
 
   // Custom functions
 
-
-  handleAuthentication: function(e){
+  handleLogin: function(e){
     e.preventDefault();
-    var user = $('#username').val();
-    var pass = $('#password').val();
-    console.log('usr + pass', user);
-    console.log('usr + pass', pass);
+    this.handleAuthentication();
+  },
+  handleAuthentication: function(e){
+    var user = $('#username').val() || 'josh';
+    var pass = $('#password').val() || 'jabu';
     $.post(this.props.auth_url + 'authenticate',
     {
       "user": user,
@@ -73,6 +73,9 @@ var Interface = React.createClass({displayName: "Interface",
       dataType: 'json',
       success: function(data){
         console.log('list of quotes: ', data);
+        if (data.msg === "Not authenticated."){
+          self.handleAuthentication();
+        }
         self.setState({quotes: data});
 
       },
@@ -133,6 +136,11 @@ var Interface = React.createClass({displayName: "Interface",
 
     });
   },
+  handleDeleteQuote: function(quoteInfo){
+    alert('delete working')
+    console.log('quoteInfo', quoteInfo);
+
+  },
 
   //render components
 
@@ -141,17 +149,19 @@ var Interface = React.createClass({displayName: "Interface",
     var route = this.props.router;
     if (route.current == 'signInPage'){
       currentComponent = React.createElement(LoginPageComponent, {
-        handleAuthentication: this.handleAuthentication}
+        handleLogin: this.handleLogin}
         )
     } else if (route.current == 'mainPage'){
       currentComponent = React.createElement(MainPageComponent, {
+        handleLogin: this.handleLogin, 
         quotes: this.state.quotes, 
         handleGetQuotes: this.handleGetQuotes, 
         handleCreateQuote: this.handleCreateQuote, 
         handleDisplayQuoteInfo: this.handleDisplayQuoteInfo, 
         selQuote: this.state.selQuote, 
         handleGetRandomQuote: this.handleGetRandomQuote, 
-        randomQuote: this.state.randomQuote}
+        randomQuote: this.state.randomQuote, 
+        handleDeleteQuote: this.handleDeleteQuote}
         )
     }
     return (

@@ -13,7 +13,7 @@ var LoginPageComponent = React.createClass({displayName: "LoginPageComponent",
       React.createElement("div", {className: "row"}, 
         React.createElement("div", {id: "login-page", className: "col xs12 col s8 offset-s4"}, 
           React.createElement("div", {className: "card-panel z-index-6 card-info teal lighten-5"}, 
-            React.createElement("form", {onSubmit: this.props.handleAuthentication, className: "login-form row"}, 
+            React.createElement("form", {onSubmit: this.props.handleLogin, className: "login-form row"}, 
               React.createElement("div", {className: "input-field col s12"}, 
                 React.createElement("input", {id: "username", type: "text", className: "validate"}), 
                 React.createElement("label", {htmlFor: "username"}, "Username")
