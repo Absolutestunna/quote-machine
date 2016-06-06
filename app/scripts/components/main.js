@@ -14,7 +14,8 @@ var MainPageComponent = React.createClass({displayName: "MainPageComponent",
   getInitialState: function(){
     return {
       quotes: [],
-      selQuote: {}
+      selQuote: {},
+      editState: false
     }
   },
   componentDidMount: function(){
@@ -41,13 +42,27 @@ var MainPageComponent = React.createClass({displayName: "MainPageComponent",
   },
 
 
-
   //custom functions
 
+  edit: function(){
+    this.setState({editState: true});
+  },
+  renderQuoteInfoDisplay: function(){
+    return (
+      React.createElement("div", {className: "col s12 viewQuote"}, 
+        React.createElement("div", {className: "card-panel white"}, 
+          React.createElement("blockquote", null, 
+            quoteInfo.quote
+          ), 
+          React.createElement("p", null, quoteInfo.author)
+        )
+      )
+    );
+  },
 
 
   render: function(){
-    var quoteInfo = this.state.selQuote
+    var quoteInfo = this.state.selQuote;
     return (
       React.createElement("div", {className: "row"}, 
         React.createElement("div", {className: "col s5"}, 
@@ -60,6 +75,7 @@ var MainPageComponent = React.createClass({displayName: "MainPageComponent",
 
         React.createElement("div", {className: "col s7"}, 
           React.createElement("div", {className: "row"}, 
+
             React.createElement("div", {className: "col s12 viewQuote"}, 
               React.createElement("div", {className: "card-panel white"}, 
                 React.createElement("blockquote", null, 
@@ -68,11 +84,13 @@ var MainPageComponent = React.createClass({displayName: "MainPageComponent",
                 React.createElement("p", null, quoteInfo.author)
               )
             ), 
+
             React.createElement(CreateQuoteComponent, {
               handleCreateQuote: this.props.handleCreateQuote}
               ), 
             React.createElement(RandomQuoteComponent, {
-              handleGetRandomQuote: this.props.handleGetRandomQuote}
+              handleGetRandomQuote: this.props.handleGetRandomQuote, 
+              randomQuote: this.props.randomQuote}
               )
           )
         )

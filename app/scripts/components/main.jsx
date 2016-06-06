@@ -15,7 +15,8 @@ var MainPageComponent = React.createClass({
   getInitialState: function(){
     return {
       quotes: [],
-      selQuote: {}
+      selQuote: {},
+      editState: false
     }
   },
   componentDidMount: function(){
@@ -42,13 +43,27 @@ var MainPageComponent = React.createClass({
   },
 
 
-
   //custom functions
 
+  edit: function(){
+    this.setState({editState: true});
+  },
+  renderQuoteInfoDisplay: function(){
+    return (
+      <div className="col s12 viewQuote">
+        <div className="card-panel white">
+          <blockquote>
+            {quoteInfo.quote}
+          </blockquote>
+          <p>{quoteInfo.author}</p>
+        </div>
+      </div>
+    );
+  },
 
 
   render: function(){
-    var quoteInfo = this.state.selQuote
+    var quoteInfo = this.state.selQuote;
     return (
       <div className="row">
         <div className="col s5">
@@ -61,6 +76,7 @@ var MainPageComponent = React.createClass({
 
         <div className="col s7">
           <div className="row">
+
             <div className="col s12 viewQuote">
               <div className="card-panel white">
                 <blockquote>
@@ -69,6 +85,7 @@ var MainPageComponent = React.createClass({
                 <p>{quoteInfo.author}</p>
               </div>
             </div>
+
             <CreateQuoteComponent
               handleCreateQuote = {this.props.handleCreateQuote}
               />

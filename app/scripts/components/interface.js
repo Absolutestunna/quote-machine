@@ -85,25 +85,30 @@ var Interface = React.createClass({displayName: "Interface",
   handleCreateQuote: function(e){
       e.preventDefault();
       var self = this;
+      var quote = $('#quote').val();
+      var author = $('#author').val()
       $.ajax({
-        url: this.props.createQuote_url + 'posts',
+        url: this.props.quote_url,
         contentType: 'application/json',
         headers: {
             'x-Auth-token': self.authToken,
         },
         data: JSON.stringify({
-            'quote': $('#quote').val(),
-            'author': $('#author').val()
+            'quote': quote,
+            'author': author
         }),
         method: 'POST',
         dataType: 'json',
       }).done(function(log){
-        console.log('created quote msg ', log);
-
+          self.state.quotes.push(log.quote);
+          self.setState({quotes: self.state.quotes});
+          $('#quote').val('');
+          $('#author').val('');
       }).error(function(error){
         console.log('error msg', error);
 
       });
+
   },
   handleDisplayQuoteInfo: function(model){
     console.log('new model', model);
