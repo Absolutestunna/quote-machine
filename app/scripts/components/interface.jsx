@@ -16,7 +16,8 @@ var Interface = React.createClass({
       router: this.props.router,
       quotes: [],
       selQuote: {},
-      randomQuote: {}
+      randomQuote: {},
+      authStatus: {}
     }
   },
   getDefaultProps: function(){
@@ -44,6 +45,7 @@ var Interface = React.createClass({
     this.handleAuthentication();
   },
   handleAuthentication: function(e){
+    var self = this;
     var user = $('#username').val() || 'josh';
     var pass = $('#password').val() || 'jabu';
     $.post(this.props.auth_url + 'authenticate',
@@ -52,9 +54,8 @@ var Interface = React.createClass({
       "pass": pass
     },
     function (result) {
-      this.authToken = result.token;
+      self.setState({authStatus: result});
       if (result.msg === "Successful auth") {
-        console.log(result);
         Backbone.history.navigate('mainPage', {trigger: 'true'});
       } else {
         console.log('error', result);
@@ -62,12 +63,12 @@ var Interface = React.createClass({
     }.bind(this));
   },
 
-  handleGetQuotes: function(){
+  handleGetQuotes: function(auth){
     var self = this;
     $.ajax({
       url: this.props.quote_url,
       headers: {
-          'x-Auth-token': self.authToken,
+          'x-Auth-token': this.state.authStatus.token || auth,
           'Content-Type':'application/json'
       },
       method: 'GET',
@@ -94,7 +95,7 @@ var Interface = React.createClass({
         url: this.props.quote_url,
         contentType: 'application/json',
         headers: {
-            'x-Auth-token': self.authToken,
+            'x-Auth-token': self.state.authStatus.token
         },
         data: JSON.stringify({
             'quote': quote,
@@ -124,7 +125,7 @@ var Interface = React.createClass({
       url: this.props.quote_url + 'random',
       contentType: 'application/json',
       headers: {
-          'x-Auth-token': self.authToken,
+          'x-Auth-token': self.state.authStatus.token
       },
       method: 'GET',
       dataType: 'json',
@@ -143,7 +144,7 @@ var Interface = React.createClass({
       url: this.props.quote_url + id,
       contentType: 'application/json',
       headers: {
-          'x-Auth-token': self.authToken,
+          'x-Auth-token': self.state.authStatus.token
       },
       method: 'DELETE',
       dataType: 'json',
@@ -166,7 +167,7 @@ var Interface = React.createClass({
       url: this.props.quote_url + id,
       contentType: 'application/json',
       headers: {
-          'x-Auth-token': self.authToken,
+          'x-Auth-token': self.state.authStatus.token
       },
       data: JSON.stringify({
         'quote': $('#editquote').val(),
@@ -197,6 +198,7 @@ var Interface = React.createClass({
         />
     } else if (route.current == 'mainPage'){
       currentComponent = <MainPageComponent
+        authStatus = {this.state.authStatus}
         handleLogin={this.handleLogin}
         handleAuthentication = {this.handleAuthentication}
         quotes={this.state.quotes}

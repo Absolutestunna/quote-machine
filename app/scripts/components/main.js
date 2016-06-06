@@ -16,6 +16,7 @@ var MainPageComponent = React.createClass({displayName: "MainPageComponent",
       quotes: [],
       selQuote: {},
       editState: false
+
     }
   },
   componentDidMount: function(){
@@ -25,8 +26,7 @@ var MainPageComponent = React.createClass({displayName: "MainPageComponent",
     var self = this;
     console.log('nextProps', nextProps);
     if (nextProps.quotes.msg === "Not authenticated."){
-      alert('not auth')
-      this.props.handleAuthentication();
+      nextProps.handleGetQuotes(nextProps.authStatus.token)
     }
     var selQuote = nextProps.selQuote;
     var quoteInfo = self.props.handleDisplayQuoteInfo;
