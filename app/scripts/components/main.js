@@ -21,10 +21,13 @@ var MainPageComponent = React.createClass({displayName: "MainPageComponent",
   componentDidMount: function(){
     this.props.handleGetQuotes();
   },
-
   componentWillReceiveProps: function(nextProps) {
-    console.log('nextProps', nextProps);
     var self = this;
+    console.log('nextProps', nextProps);
+    if (nextProps.quotes.msg === "Not authenticated."){
+      alert('not auth')
+      this.props.handleAuthentication();
+    }
     var selQuote = nextProps.selQuote;
     var quoteInfo = self.props.handleDisplayQuoteInfo;
     var quoteList = nextProps.quotes;
@@ -48,24 +51,23 @@ var MainPageComponent = React.createClass({displayName: "MainPageComponent",
     e.preventDefault();
     this.setState({editState: true});
   },
-  save: function(e){
+  save: function(quoteInfo, e){
     e.preventDefault();
     this.setState({editState: false});
+    this.props.handleSaveQuote(quoteInfo);
   },
   delete: function(model, e){
     e.preventDefault();
     this.props.handleDeleteQuote(model);
-
-
   },
   renderQuoteInfoDisplay: function(quoteInfo){
     return (
       React.createElement("div", {className: "col s12 viewQuote"}, 
         React.createElement("div", {className: "card-panel white"}, 
-          React.createElement("blockquote", null, 
-            quoteInfo.quote
+          React.createElement("blockquote", {id: "blockquote"}, 
+            quoteInfo.quote || "Please select a quote any of the quotes from the list"
           ), 
-          React.createElement("p", null, quoteInfo.author), 
+          React.createElement("p", {id: "block-author"}, quoteInfo.author), 
           React.createElement("div", {className: "right-align"}, 
             React.createElement("a", {onClick: this.delete.bind(this, quoteInfo), className: "btn-floating btn-small red"}, 
               React.createElement("i", {className: "large material-icons"}, "delete")
@@ -87,10 +89,11 @@ var MainPageComponent = React.createClass({displayName: "MainPageComponent",
         React.createElement("div", {className: "card-panel white"}, 
           React.createElement("div", {className: "input-field"}, 
             React.createElement("i", {className: "small material-icons prefix"}, "mode_edit"), 
-            React.createElement("textarea", {placeholder: quoteInfo.quote, id: "editquote", type: "text", className: "materialize-textarea validate"}), 
-            React.createElement("label", {htmlFor: "textarea1"}, "Edit Your quote"), 
+            React.createElement("textarea", {placeholder: quoteInfo.quote, id: "editquote", type: "text", className: "materialize-textarea validate"}
+            ), 
+            React.createElement("input", {id: "editAuthor", placeholder: quoteInfo.author, type: "text", className: "validate"}), 
             React.createElement("div", {className: "right-align"}, 
-              React.createElement("a", {onClick: this.save, className: "btn-floating btn-large green", type: "submit"}, 
+              React.createElement("a", {onClick: this.save.bind(this, quoteInfo), className: "btn-floating btn-large green", type: "submit"}, 
                 React.createElement("i", {className: "large material-icons"}, "done")
               )
             )

@@ -72,7 +72,6 @@ var Interface = React.createClass({displayName: "Interface",
       method: 'GET',
       dataType: 'json',
       success: function(data){
-        console.log('list of quotes: ', data);
         if (data.msg === "Not authenticated."){
           self.handleAuthentication();
         }
@@ -137,9 +136,53 @@ var Interface = React.createClass({displayName: "Interface",
     });
   },
   handleDeleteQuote: function(quoteInfo){
-    alert('delete working')
-    console.log('quoteInfo', quoteInfo);
-
+    var self = this;
+    var id = quoteInfo.quote_id;
+    $.ajax({
+      url: this.props.quote_url + id,
+      contentType: 'application/json',
+      headers: {
+          'x-Auth-token': self.authToken,
+      },
+      method: 'DELETE',
+      dataType: 'json',
+    }).done(function(log){
+      var newQuotes = self.state.quotes.filter(function(obj) {
+        return obj.quote_id !== id;
+      });
+      self.setState({quotes: newQuotes});
+      $('#blockquote').html('');
+      $('#block-author').html('');
+    }).error(function(error){
+      console.log('delete msg error msg', error);
+    });
+  },
+  handleSaveQuote: function(quoteInfo){
+    var self = this;
+    var id = quoteInfo.quote_id;
+    console.log('id', id);
+    $.ajax({
+      url: this.props.quote_url + id,
+      contentType: 'application/json',
+      headers: {
+          'x-Auth-token': self.authToken,
+      },
+      data: JSON.stringify({
+        'quote': $('#editquote').val(),
+        'author': $('#editAuthor').val() || quoteInfo.author
+      }),
+      method: 'PUT',
+      dataType: 'json',
+    }).done(function(log){
+      var newQuoteObj = {
+        'quote': $('#editquote').val(),
+        'author': $('#editAuthor').val() || quoteInfo.author
+      }
+      var obj = self.state.quotes.push(newQuoteObj);
+      self.setState({quotes: obj});
+    }).error(function(error){
+      console.log('edit msg error msg', error);
+    });
   },
 
   //render components
@@ -154,6 +197,7 @@ var Interface = React.createClass({displayName: "Interface",
     } else if (route.current == 'mainPage'){
       currentComponent = React.createElement(MainPageComponent, {
         handleLogin: this.handleLogin, 
+        handleAuthentication: this.handleAuthentication, 
         quotes: this.state.quotes, 
         handleGetQuotes: this.handleGetQuotes, 
         handleCreateQuote: this.handleCreateQuote, 
@@ -161,7 +205,8 @@ var Interface = React.createClass({displayName: "Interface",
         selQuote: this.state.selQuote, 
         handleGetRandomQuote: this.handleGetRandomQuote, 
         randomQuote: this.state.randomQuote, 
-        handleDeleteQuote: this.handleDeleteQuote}
+        handleDeleteQuote: this.handleDeleteQuote, 
+        handleSaveQuote: this.handleSaveQuote}
         )
     }
     return (

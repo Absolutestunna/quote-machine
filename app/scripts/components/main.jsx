@@ -22,10 +22,13 @@ var MainPageComponent = React.createClass({
   componentDidMount: function(){
     this.props.handleGetQuotes();
   },
-
   componentWillReceiveProps: function(nextProps) {
-    console.log('nextProps', nextProps);
     var self = this;
+    console.log('nextProps', nextProps);
+    if (nextProps.quotes.msg === "Not authenticated."){
+      alert('not auth')
+      this.props.handleAuthentication();
+    }
     var selQuote = nextProps.selQuote;
     var quoteInfo = self.props.handleDisplayQuoteInfo;
     var quoteList = nextProps.quotes;
@@ -49,24 +52,23 @@ var MainPageComponent = React.createClass({
     e.preventDefault();
     this.setState({editState: true});
   },
-  save: function(e){
+  save: function(quoteInfo, e){
     e.preventDefault();
     this.setState({editState: false});
+    this.props.handleSaveQuote(quoteInfo);
   },
   delete: function(model, e){
     e.preventDefault();
     this.props.handleDeleteQuote(model);
-
-
   },
   renderQuoteInfoDisplay: function(quoteInfo){
     return (
       <div className="col s12 viewQuote">
         <div className="card-panel white">
-          <blockquote>
-            {quoteInfo.quote}
+          <blockquote id="blockquote">
+            {quoteInfo.quote || "Please select a quote any of the quotes from the list"}
           </blockquote>
-          <p>{quoteInfo.author}</p>
+          <p id="block-author">{quoteInfo.author}</p>
           <div className="right-align">
             <a onClick={this.delete.bind(this, quoteInfo)} className="btn-floating btn-small red">
               <i className="large material-icons">delete</i>
@@ -88,10 +90,11 @@ var MainPageComponent = React.createClass({
         <div className="card-panel white">
           <div className="input-field">
             <i className="small material-icons prefix">mode_edit</i>
-            <textarea placeholder={quoteInfo.quote} id="editquote" type="text" className="materialize-textarea validate"></textarea>
-            <label htmlFor="textarea1">Edit Your quote</label>
+            <textarea placeholder={quoteInfo.quote} id="editquote" type="text" className="materialize-textarea validate">
+            </textarea>
+            <input id="editAuthor" placeholder={quoteInfo.author} type="text" className="validate"/>
             <div className="right-align">
-              <a onClick={this.save} className="btn-floating btn-large green" type="submit">
+              <a onClick={this.save.bind(this, quoteInfo)} className="btn-floating btn-large green" type="submit">
                 <i className="large material-icons">done</i>
               </a>
             </div>
