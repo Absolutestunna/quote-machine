@@ -5,7 +5,11 @@ var ReactDOM = require('react-dom');
 var _ = require('underscore');
 require('backbone-react-component');
 
+
 var RandomQuoteComponent = React.createClass({
+
+  //local lifecycle components
+
   getInitialState: function(){
     return {
       quoteInfo: {}

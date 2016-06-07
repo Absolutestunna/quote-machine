@@ -11,6 +11,9 @@ var RandomQuoteComponent = require('./randomQuote.jsx');
 
 
 var MainPageComponent = React.createClass({displayName: "MainPageComponent",
+
+  //local lifecycle components
+
   getInitialState: function(){
     return {
       quotes: [],
@@ -132,12 +135,9 @@ var MainPageComponent = React.createClass({displayName: "MainPageComponent",
             )
         ), 
 
-
         React.createElement("div", {className: "col s7"}, 
           React.createElement("div", {className: "row"}, 
-
             display, 
-
             React.createElement(CreateQuoteComponent, {
               handleCreateQuote: this.props.handleCreateQuote}
               ), 
