@@ -5784,9 +5784,19 @@ body {
   #login-page .login {
     margin-top: 30px; }
 
+.listquotes {
+  height: 500px;
+  width: 100%;
+  overflow-y: scroll; }
+
 .quote {
   display: inline-block !important; }
 
 .feature-buttons .edit {
   margin-left: 5px; }
+
+@media (min-width: 400px) and (max-width: 660px) {
+  .listquotes {
+    height: 300px; } }
+
 /*# sourceMappingURL=app.css.map */
