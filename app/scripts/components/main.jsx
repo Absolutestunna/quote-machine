@@ -16,8 +16,8 @@ var MainPageComponent = React.createClass({
     return {
       quotes: [],
       selQuote: {},
-      editState: false
-
+      editState: false,
+      authToken: ""
     }
   },
   componentDidMount: function(){
@@ -25,14 +25,13 @@ var MainPageComponent = React.createClass({
   },
   componentWillReceiveProps: function(nextProps) {
     var self = this;
-    console.log('nextProps', nextProps);
+    this.setState({authToken: nextProps.authStatus.token});
     if (nextProps.quotes.msg === "Not authenticated."){
       nextProps.handleGetQuotes(nextProps.authStatus.token)
     }
     var selQuote = nextProps.selQuote;
     var quoteInfo = self.props.handleDisplayQuoteInfo;
     var quoteList = nextProps.quotes;
-    console.log('quoteListlength', quoteList.length);
     var quotes = quoteList.map(function(quote){
       return (
         <li onClick={quoteInfo.bind(this, quote)} className="collection-item truncate" key={quote.quote_id}>
@@ -49,9 +48,13 @@ var MainPageComponent = React.createClass({
 
   //custom functions
 
-  edit: function(model, e){
+  edit: function(quoteInfo, e){
     e.preventDefault();
-    this.setState({editState: true});
+    if (Object.keys(quoteInfo).length < 1){
+      alert ('Please pick a quote from the list of quotes');
+    } else {
+      this.setState({editState: true});
+    }
   },
   save: function(quoteInfo, e){
     e.preventDefault();
@@ -60,7 +63,11 @@ var MainPageComponent = React.createClass({
   },
   delete: function(model, e){
     e.preventDefault();
-    this.props.handleDeleteQuote(model);
+    if (Object.keys(model).length < 1){
+      alert ('Please pick a quote to delete');
+    } else {
+      this.props.handleDeleteQuote(model);
+    }
   },
   renderQuoteInfoDisplay: function(quoteInfo){
     return (
@@ -70,14 +77,13 @@ var MainPageComponent = React.createClass({
             {quoteInfo.quote || "Please select a quote any of the quotes from the list"}
           </blockquote>
           <p id="block-author">{quoteInfo.author}</p>
-          <div className="right-align">
-            <a onClick={this.delete.bind(this, quoteInfo)} className="btn-floating btn-small red">
+          <div className="right-align feature-buttons">
+            <a onClick={this.delete.bind(this, quoteInfo)} className="delete btn-floating btn-small red">
               <i className="large material-icons">delete</i>
             </a>
-            <a onClick={this.edit.bind(this, quoteInfo)} className="btn-floating btn-small blue">
+            <a onClick={this.edit.bind(this, quoteInfo)} className="edit btn-floating btn-small blue">
               <i className="large material-icons">mode_edit</i>
             </a>
-
           </div>
 
         </div>
@@ -137,6 +143,7 @@ var MainPageComponent = React.createClass({
               handleCreateQuote = {this.props.handleCreateQuote}
               />
             <RandomQuoteComponent
+              authToken = {this.props.authToken}
               handleGetRandomQuote = {this.props.handleGetRandomQuote}
               randomQuote = {this.props.randomQuote}
               />

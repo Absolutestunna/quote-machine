@@ -11,7 +11,7 @@ var LoginPageComponent = React.createClass({displayName: "LoginPageComponent",
   render: function(){
     return (
       React.createElement("div", {className: "row"}, 
-        React.createElement("div", {id: "login-page", className: "col xs12 col s8 offset-s4"}, 
+        React.createElement("div", {id: "login-page", className: "col xs12 col s8"}, 
           React.createElement("div", {className: "card-panel z-index-6 card-info teal lighten-5"}, 
             React.createElement("form", {onSubmit: this.props.handleLogin, className: "login-form row"}, 
               React.createElement("div", {className: "input-field col s12"}, 
@@ -24,8 +24,8 @@ var LoginPageComponent = React.createClass({displayName: "LoginPageComponent",
                 React.createElement("label", {htmlFor: "password"}, "Password")
               ), 
 
-              React.createElement("div", {className: "input-field col s12"}, 
-                React.createElement("button", {className: "btn waves-effect waves-light", type: "submit"}, "Submit", 
+              React.createElement("div", {className: "input-field col s12 center-align"}, 
+                React.createElement("button", {className: "btn waves-effect waves-light login", type: "submit"}, "Login", 
                   React.createElement("i", {className: "material-icons right"}, "send")
                 )
               )

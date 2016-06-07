@@ -11,9 +11,12 @@ var RandomQuoteComponent = React.createClass({displayName: "RandomQuoteComponent
     }
   },
   componentWillReceiveProps: function(nextProps){
-    console.log('randome next props', nextProps);
     var quoteInfo = nextProps.randomQuote;
-    this.setState({quoteInfo: quoteInfo});
+    if (quoteInfo.msg === "Not authenticated."){
+      this.props.handleGetRandomQuote(this.props.authToken);
+    } else {
+      this.setState({quoteInfo: quoteInfo});
+    }
   },
   render: function(){
     return (
@@ -21,8 +24,10 @@ var RandomQuoteComponent = React.createClass({displayName: "RandomQuoteComponent
         React.createElement("div", {className: "card-panel white"}, 
           React.createElement("div", {className: "row"}, 
             React.createElement("h2", {className: "col s8 left-align"}, "Random Quote of the day"), 
-            React.createElement("span", {className: "col s4 center-align"}, React.createElement("a", {onClick: this.props.handleGetRandomQuote, className: "btn-floating btn-large waves-effect waves-light red col s4 right-align"}, React.createElement("i", {className: "material-icons"}, "add"))
+            React.createElement("div", {className: "col s4 center-align"}, 
+              React.createElement("a", {onClick: this.props.handleGetRandomQuote, className: "btn-floating btn-large waves-effect waves-light red"}, React.createElement("i", {className: "material-icons"}, "add"))
             )
+
           ), 
           React.createElement("blockquote", null, 
             this.state.quoteInfo.quote

@@ -15,8 +15,8 @@ var MainPageComponent = React.createClass({displayName: "MainPageComponent",
     return {
       quotes: [],
       selQuote: {},
-      editState: false
-
+      editState: false,
+      authToken: ""
     }
   },
   componentDidMount: function(){
@@ -24,14 +24,13 @@ var MainPageComponent = React.createClass({displayName: "MainPageComponent",
   },
   componentWillReceiveProps: function(nextProps) {
     var self = this;
-    console.log('nextProps', nextProps);
+    this.setState({authToken: nextProps.authStatus.token});
     if (nextProps.quotes.msg === "Not authenticated."){
       nextProps.handleGetQuotes(nextProps.authStatus.token)
     }
     var selQuote = nextProps.selQuote;
     var quoteInfo = self.props.handleDisplayQuoteInfo;
     var quoteList = nextProps.quotes;
-    console.log('quoteListlength', quoteList.length);
     var quotes = quoteList.map(function(quote){
       return (
         React.createElement("li", {onClick: quoteInfo.bind(this, quote), className: "collection-item truncate", key: quote.quote_id}, 
@@ -48,9 +47,13 @@ var MainPageComponent = React.createClass({displayName: "MainPageComponent",
 
   //custom functions
 
-  edit: function(model, e){
+  edit: function(quoteInfo, e){
     e.preventDefault();
-    this.setState({editState: true});
+    if (Object.keys(quoteInfo).length < 1){
+      alert ('Please pick a quote from the list of quotes');
+    } else {
+      this.setState({editState: true});
+    }
   },
   save: function(quoteInfo, e){
     e.preventDefault();
@@ -59,7 +62,11 @@ var MainPageComponent = React.createClass({displayName: "MainPageComponent",
   },
   delete: function(model, e){
     e.preventDefault();
-    this.props.handleDeleteQuote(model);
+    if (Object.keys(model).length < 1){
+      alert ('Please pick a quote to delete');
+    } else {
+      this.props.handleDeleteQuote(model);
+    }
   },
   renderQuoteInfoDisplay: function(quoteInfo){
     return (
@@ -69,14 +76,13 @@ var MainPageComponent = React.createClass({displayName: "MainPageComponent",
             quoteInfo.quote || "Please select a quote any of the quotes from the list"
           ), 
           React.createElement("p", {id: "block-author"}, quoteInfo.author), 
-          React.createElement("div", {className: "right-align"}, 
-            React.createElement("a", {onClick: this.delete.bind(this, quoteInfo), className: "btn-floating btn-small red"}, 
+          React.createElement("div", {className: "right-align feature-buttons"}, 
+            React.createElement("a", {onClick: this.delete.bind(this, quoteInfo), className: "delete btn-floating btn-small red"}, 
               React.createElement("i", {className: "large material-icons"}, "delete")
             ), 
-            React.createElement("a", {onClick: this.edit.bind(this, quoteInfo), className: "btn-floating btn-small blue"}, 
+            React.createElement("a", {onClick: this.edit.bind(this, quoteInfo), className: "edit btn-floating btn-small blue"}, 
               React.createElement("i", {className: "large material-icons"}, "mode_edit")
             )
-
           )
 
         )
@@ -136,6 +142,7 @@ var MainPageComponent = React.createClass({displayName: "MainPageComponent",
               handleCreateQuote: this.props.handleCreateQuote}
               ), 
             React.createElement(RandomQuoteComponent, {
+              authToken: this.props.authToken, 
               handleGetRandomQuote: this.props.handleGetRandomQuote, 
               randomQuote: this.props.randomQuote}
               )

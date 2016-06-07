@@ -12,9 +12,12 @@ var RandomQuoteComponent = React.createClass({
     }
   },
   componentWillReceiveProps: function(nextProps){
-    console.log('randome next props', nextProps);
     var quoteInfo = nextProps.randomQuote;
-    this.setState({quoteInfo: quoteInfo});
+    if (quoteInfo.msg === "Not authenticated."){
+      this.props.handleGetRandomQuote(this.props.authToken);
+    } else {
+      this.setState({quoteInfo: quoteInfo});
+    }
   },
   render: function(){
     return (
@@ -22,8 +25,10 @@ var RandomQuoteComponent = React.createClass({
         <div className="card-panel white">
           <div className="row">
             <h2 className="col s8 left-align">Random Quote of the day</h2>
-            <span className="col s4 center-align"><a onClick={this.props.handleGetRandomQuote} className="btn-floating btn-large waves-effect waves-light red col s4 right-align"><i className="material-icons">add</i></a>
-            </span>
+            <div className="col s4 center-align">
+              <a onClick={this.props.handleGetRandomQuote} className="btn-floating btn-large waves-effect waves-light red"><i className="material-icons">add</i></a>
+            </div>
+
           </div>
           <blockquote>
             {this.state.quoteInfo.quote}

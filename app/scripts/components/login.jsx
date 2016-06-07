@@ -12,7 +12,7 @@ var LoginPageComponent = React.createClass({
   render: function(){
     return (
       <div className="row">
-        <div id="login-page" className="col xs12 col s8 offset-s4">
+        <div id="login-page" className="col xs12 col s8">
           <div className="card-panel z-index-6 card-info teal lighten-5">
             <form onSubmit={this.props.handleLogin} className="login-form row">
               <div className="input-field col s12">
@@ -25,8 +25,8 @@ var LoginPageComponent = React.createClass({
                 <label htmlFor="password">Password</label>
               </div>
 
-              <div className="input-field col s12">
-                <button className="btn waves-effect waves-light" type="submit">Submit
+              <div className="input-field col s12 center-align">
+                <button className="btn waves-effect waves-light login" type="submit">Login
                   <i className="material-icons right">send</i>
                 </button>
               </div>

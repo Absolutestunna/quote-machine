@@ -27,8 +27,6 @@ var CreateQuoteComponent = React.createClass({
                   <i className="material-icons right">send</i>
                 </button>
               </div>
-
-
             </form>
          </div>
       </div>

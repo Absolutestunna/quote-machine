@@ -117,8 +117,7 @@ var Interface = React.createClass({
   handleDisplayQuoteInfo: function(model){
     this.setState({selQuote: model})
   },
-  handleGetRandomQuote: function(e){
-    e.preventDefault();
+  handleGetRandomQuote: function(){
     var self = this;
     $.ajax({
       url: this.props.quote_url + 'random',
