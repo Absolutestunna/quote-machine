@@ -77,7 +77,6 @@ var Interface = React.createClass({displayName: "Interface",
           self.handleAuthentication();
         }
         self.setState({quotes: data});
-
       },
       error: function(error){
         console.log('error msg', error);
@@ -107,6 +106,7 @@ var Interface = React.createClass({displayName: "Interface",
           self.setState({quotes: self.state.quotes});
           $('#quote').val('');
           $('#author').val('');
+
       }).error(function(error){
         console.log('error msg', error);
 
@@ -114,7 +114,6 @@ var Interface = React.createClass({displayName: "Interface",
 
   },
   handleDisplayQuoteInfo: function(model){
-    console.log('new model', model);
     this.setState({selQuote: model})
   },
   handleGetRandomQuote: function(e){
@@ -161,7 +160,6 @@ var Interface = React.createClass({displayName: "Interface",
   handleSaveQuote: function(quoteInfo){
     var self = this;
     var id = quoteInfo.quote_id;
-    console.log('id', id);
     $.ajax({
       url: this.props.quote_url + id,
       contentType: 'application/json',
@@ -176,12 +174,15 @@ var Interface = React.createClass({displayName: "Interface",
       dataType: 'json',
     }).done(function(log){
       var newQuoteObj = {
+        'quote_id': quoteInfo.quote_id,
         'quote': $('#editquote').val(),
         'author': $('#editAuthor').val() || quoteInfo.author
       }
       var obj = self.state.quotes.push(newQuoteObj);
       self.setState({quotes: obj});
+      console.log('quoteList1', self.state.quotes.length);
     }).error(function(error){
+
       console.log('edit msg error msg', error);
     });
   },

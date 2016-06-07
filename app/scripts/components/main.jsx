@@ -32,6 +32,7 @@ var MainPageComponent = React.createClass({
     var selQuote = nextProps.selQuote;
     var quoteInfo = self.props.handleDisplayQuoteInfo;
     var quoteList = nextProps.quotes;
+    console.log('quoteListlength', quoteList.length);
     var quotes = quoteList.map(function(quote){
       return (
         <li onClick={quoteInfo.bind(this, quote)} className="collection-item truncate" key={quote.quote_id}>
@@ -65,7 +66,7 @@ var MainPageComponent = React.createClass({
     return (
       <div className="col s12 viewQuote">
         <div className="card-panel white">
-          <blockquote id="blockquote">
+          <blockquote id="blockquote" placeholder="">
             {quoteInfo.quote || "Please select a quote any of the quotes from the list"}
           </blockquote>
           <p id="block-author">{quoteInfo.author}</p>

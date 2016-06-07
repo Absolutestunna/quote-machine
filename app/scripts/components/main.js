@@ -31,6 +31,7 @@ var MainPageComponent = React.createClass({displayName: "MainPageComponent",
     var selQuote = nextProps.selQuote;
     var quoteInfo = self.props.handleDisplayQuoteInfo;
     var quoteList = nextProps.quotes;
+    console.log('quoteListlength', quoteList.length);
     var quotes = quoteList.map(function(quote){
       return (
         React.createElement("li", {onClick: quoteInfo.bind(this, quote), className: "collection-item truncate", key: quote.quote_id}, 
@@ -64,7 +65,7 @@ var MainPageComponent = React.createClass({displayName: "MainPageComponent",
     return (
       React.createElement("div", {className: "col s12 viewQuote"}, 
         React.createElement("div", {className: "card-panel white"}, 
-          React.createElement("blockquote", {id: "blockquote"}, 
+          React.createElement("blockquote", {id: "blockquote", placeholder: ""}, 
             quoteInfo.quote || "Please select a quote any of the quotes from the list"
           ), 
           React.createElement("p", {id: "block-author"}, quoteInfo.author), 
