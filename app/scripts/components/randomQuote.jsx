@@ -28,7 +28,7 @@ var RandomQuoteComponent = React.createClass({
       <div className="col s12 randomQuote">
         <div className="card-panel white">
           <div className="row">
-            <h2 className="col s8 left-align">Random Quote of the day</h2>
+            <h4 className="col s8 left-align">Random quote</h4>
             <div className="col s4 center-align">
               <a onClick={this.props.handleGetRandomQuote} className="btn-floating btn-large waves-effect waves-light red"><i className="material-icons">add</i></a>
             </div>

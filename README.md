@@ -8,3 +8,6 @@ Features include:
 
 Sample project: http://codepen.io/trendsetter37/pen/ZbBeGW
 Random quote generator: https://github.com/trendsetter37/quote-generator/tree/add-token-auth#tesla-random-quote-generators
+
+
+**Please enable cross-origin sharing on chrome browser, or use Safari or Mozilla to run this project.

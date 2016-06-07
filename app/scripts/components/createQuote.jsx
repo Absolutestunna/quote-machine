@@ -10,7 +10,7 @@ var CreateQuoteComponent = React.createClass({
     return (
       <div className="col s12 genQuote">
           <div className="card-panel white">
-            <form className="login-form row" onSubmit={this.props.handleCreateQuote}>
+            <form className="row" onSubmit={this.props.handleCreateQuote}>
               <div className="input-field col s12">
                 <i className="material-icons prefix">mode_edit</i>
                 <textarea id="quote" className="materialize-textarea"></textarea>
@@ -22,7 +22,7 @@ var CreateQuoteComponent = React.createClass({
                 <label htmlFor="author">Author</label>
               </div>
 
-              <div className="input-field col s6">
+              <div className="input-field col s6 center-align">
                 <button className="btn waves-effect waves-light" type="submit">Submit
                   <i className="material-icons right">send</i>
                 </button>

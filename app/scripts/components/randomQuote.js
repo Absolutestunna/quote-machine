@@ -27,7 +27,7 @@ var RandomQuoteComponent = React.createClass({displayName: "RandomQuoteComponent
       React.createElement("div", {className: "col s12 randomQuote"}, 
         React.createElement("div", {className: "card-panel white"}, 
           React.createElement("div", {className: "row"}, 
-            React.createElement("h2", {className: "col s8 left-align"}, "Random Quote of the day"), 
+            React.createElement("h4", {className: "col s8 left-align"}, "Random quote"), 
             React.createElement("div", {className: "col s4 center-align"}, 
               React.createElement("a", {onClick: this.props.handleGetRandomQuote, className: "btn-floating btn-large waves-effect waves-light red"}, React.createElement("i", {className: "material-icons"}, "add"))
             )

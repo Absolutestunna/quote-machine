@@ -9,7 +9,7 @@ var CreateQuoteComponent = React.createClass({displayName: "CreateQuoteComponent
     return (
       React.createElement("div", {className: "col s12 genQuote"}, 
           React.createElement("div", {className: "card-panel white"}, 
-            React.createElement("form", {className: "login-form row", onSubmit: this.props.handleCreateQuote}, 
+            React.createElement("form", {className: "row", onSubmit: this.props.handleCreateQuote}, 
               React.createElement("div", {className: "input-field col s12"}, 
                 React.createElement("i", {className: "material-icons prefix"}, "mode_edit"), 
                 React.createElement("textarea", {id: "quote", className: "materialize-textarea"}), 
@@ -21,7 +21,7 @@ var CreateQuoteComponent = React.createClass({displayName: "CreateQuoteComponent
                 React.createElement("label", {htmlFor: "author"}, "Author")
               ), 
 
-              React.createElement("div", {className: "input-field col s6"}, 
+              React.createElement("div", {className: "input-field col s6 center-align"}, 
                 React.createElement("button", {className: "btn waves-effect waves-light", type: "submit"}, "Submit", 
                   React.createElement("i", {className: "material-icons right"}, "send")
                 )

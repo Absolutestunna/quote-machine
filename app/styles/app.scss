@@ -5,7 +5,6 @@ $icon-font-path: '../../node_modules/bootstrap-sass/assets/fonts/bootstrap/';
 // Import Bootstrap
 @import '../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap';
 
-
 *,
 *::before,
 *::after {
@@ -39,6 +38,12 @@ body {
   }
 }
 
+.listquotes {
+  height: 500px;
+  width: 100%;
+  overflow-y: scroll;
+}
+
 .quote {
   display: inline-block !important;
 }
@@ -47,4 +52,12 @@ body {
   .edit {
     margin-left: 5px;
   }
+}
+
+// media queries
+
+@media (min-width: 400px) and (max-width: 660px) {
+    .listquotes {
+      height: 300px;
+    }
 }

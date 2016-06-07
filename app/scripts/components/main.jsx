@@ -76,8 +76,8 @@ var MainPageComponent = React.createClass({
     return (
       <div className="col s12 viewQuote">
         <div className="card-panel white">
-          <blockquote id="blockquote" placeholder="">
-            {quoteInfo.quote || "Please select a quote any of the quotes from the list"}
+          <blockquote id="blockquote">
+            {quoteInfo.quote || "Please select a quote"}
           </blockquote>
           <p id="block-author">{quoteInfo.author}</p>
           <div className="right-align feature-buttons">
@@ -129,14 +129,14 @@ var MainPageComponent = React.createClass({
     }
     return (
       <div className="row">
-        <div className="col s5">
-            <ul className="collection with-header">
+        <div className="col xs12 s12 m5 l5 xl5">
+            <ul className="collection with-header listquotes">
               <li className="collection-header"><h4>List of Quotes</h4></li>
               {this.state.quotes}
             </ul>
         </div>
 
-        <div className="col s7">
+        <div className="col xs12 s12 m7 l7">
           <div className="row">
             {display}
             <CreateQuoteComponent

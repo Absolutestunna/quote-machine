@@ -75,8 +75,8 @@ var MainPageComponent = React.createClass({displayName: "MainPageComponent",
     return (
       React.createElement("div", {className: "col s12 viewQuote"}, 
         React.createElement("div", {className: "card-panel white"}, 
-          React.createElement("blockquote", {id: "blockquote", placeholder: ""}, 
-            quoteInfo.quote || "Please select a quote any of the quotes from the list"
+          React.createElement("blockquote", {id: "blockquote"}, 
+            quoteInfo.quote || "Please select a quote"
           ), 
           React.createElement("p", {id: "block-author"}, quoteInfo.author), 
           React.createElement("div", {className: "right-align feature-buttons"}, 
@@ -128,14 +128,14 @@ var MainPageComponent = React.createClass({displayName: "MainPageComponent",
     }
     return (
       React.createElement("div", {className: "row"}, 
-        React.createElement("div", {className: "col s5"}, 
-            React.createElement("ul", {className: "collection with-header"}, 
+        React.createElement("div", {className: "col xs12 s12 m5 l5 xl5"}, 
+            React.createElement("ul", {className: "collection with-header listquotes"}, 
               React.createElement("li", {className: "collection-header"}, React.createElement("h4", null, "List of Quotes")), 
               this.state.quotes
             )
         ), 
 
-        React.createElement("div", {className: "col s7"}, 
+        React.createElement("div", {className: "col xs12 s12 m7 l7"}, 
           React.createElement("div", {className: "row"}, 
             display, 
             React.createElement(CreateQuoteComponent, {

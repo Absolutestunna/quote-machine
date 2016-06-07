@@ -160,6 +160,7 @@ var Interface = React.createClass({
   handleSaveQuote: function(quoteInfo){
     var self = this;
     var id = quoteInfo.quote_id;
+    console.log('token for save', self.state.authStatus.token);
     $.ajax({
       url: this.props.quote_url + id,
       contentType: 'application/json',
@@ -173,6 +174,7 @@ var Interface = React.createClass({
       method: 'PUT',
       dataType: 'json',
     }).done(function(log){
+      console.log('edit log', log);
       var newQuoteObj = {
         'quote_id': quoteInfo.quote_id,
         'quote': $('#editquote').val(),
